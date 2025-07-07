@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Flood Alert Result</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+  <style>
+  body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: url("{% if flood_predicted %}/static/flood.png{% else %}/static/cloud.jpg{% endif %}") no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .weather-box {
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 25px;
+      padding: 40px;
+      width: 90%;
+      max-width: 700px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: white;
+      text-align: center;
+    }
+
+    .weather-box h1 {
+      font-size: 72px;
+      margin: 0;
+    }
+
+    .weather-box h2 {
+      margin-top: 10px;
+      font-weight: 600;
+    }
+
+    .weather-box h3 {
+      margin: 10px 0 25px;
+      font-weight: 500;
+      font-size: 20px;
+    }
+
+    .weather-details {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .weather-details div {
+      background: rgba(255, 255, 255, 0.15);
+      padding: 15px 20px;
+      border-radius: 15px;
+      font-size: 16px;
+      min-width: 140px;
+      font-weight: 500;
+    }
+
+    .check-again-btn {
+      margin-top: 35px;
+    }
+
+    .check-again-btn a {
+      display: inline-block;
+      background: #ffffff;
+      color: #333;
+      padding: 12px 30px;
+      border-radius: 25px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .check-again-btn a:hover {
+      background-color: #f2f2f2;
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="weather-box">
+    <h1>{{ temperature }}°C</h1>
+    <h2>{{ city }}</h2>
+    {% if flood_predicted %}
+      <h3>🚨 Flood Alert Issued! Please Stay Safe!</h3>
+      <p><strong>📢 Message:</strong> {{ translated }}</p>
+    {% else %}
+      <h3>{{ weather_status|capitalize }} – No Flood Risk ✅</h3>
+    {% endif %}
+
+    <div class="weather-details">
+      <div>☁️ Humidity: {{ humidity }}%</div>
+      <div>💧 Rainfall: {{ rainfall }} mm</div>
+      <div>🌡️ Temperature: {{ temperature }}°C</div>
+      <div>🌊 River Level: {{ river_level }} m</div>
+    </div>
+  </div>
+
+  <div class="check-again-btn">
+    <a href="/">← Check Another Location</a>
+  </div>
+
+</body>
+</html>
