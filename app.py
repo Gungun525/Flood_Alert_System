@@ -10,7 +10,7 @@ import csv
 # Config
 API_KEY = 'dcd1e59fdf98dd5953683ad7e3f27651'
 TWILIO_SID = 'AC239b59d54ff986da5080d3e9bb54e387'
-TWILIO_TOKEN = 'acd6f079a578cc7d9f8a4f24d2a91b7a'
+TWILIO_TOKEN = 'fe32a0010c4df367068fab0736206ff2'
 FROM_PHONE = '+15739833157'
 
 # Init
@@ -19,9 +19,11 @@ model = joblib.load('flood_model.pkl')
 translator = Translator()
 client = Client(TWILIO_SID, TWILIO_TOKEN)
 
+
 @app.route('/')
 def index():
     return render_template('index.html')
+
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -71,7 +73,9 @@ def predict():
     if prediction == 1:
         # ✅ Send to current user
         try:
-            client.messages.create(body=translated, from_=FROM_PHONE, to=full_phone)
+            client.messages.create(body=translated,
+                                   from_=FROM_PHONE,
+                                   to=full_phone)
         except Exception as e:
             return f"<h3>❌ Failed to send SMS to current user: {e}</h3>"
 
@@ -82,38 +86,42 @@ def predict():
 
             for saved_phone, saved_city, saved_lang in users:
                 try:
-                    translated_msg = translator.translate(msg, dest=saved_lang).text
-                    client.messages.create(body=translated_msg, from_=FROM_PHONE, to=saved_phone)
+                    translated_msg = translator.translate(msg,
+                                                          dest=saved_lang).text
+                    client.messages.create(body=translated_msg,
+                                           from_=FROM_PHONE,
+                                           to=saved_phone)
                 except Exception as e:
                     print(f"❌ Failed to send SMS to {saved_phone}: {e}")
         except Exception as e:
             print(f"❌ Error reading users.csv: {e}")
 
-        weather_status = "flood" if mode == "demo" else weather['weather'][0]['main'].lower()
+        weather_status = "flood" if mode == "demo" else weather['weather'][0][
+            'main'].lower()
 
         return render_template('result.html',
-                       city=city,
-                       rainfall=rainfall,
-                       humidity=humidity,
-                       temperature=temperature,
-                       river_level=river_level,
-                       weather_status=weather_status,
-                       flood_predicted=True,
-                       translated=translated)
+                               city=city,
+                               rainfall=rainfall,
+                               humidity=humidity,
+                               temperature=temperature,
+                               river_level=river_level,
+                               weather_status=weather_status,
+                               flood_predicted=True,
+                               translated=translated)
 
     else:
         weather_status = weather['weather'][0]['main'].lower()
 
         return render_template('result.html',
-                       city=city,
-                       rainfall=rainfall,
-                       humidity=humidity,
-                       temperature=temperature,
-                       river_level=river_level,
-                       weather_status=weather_status,
-                       flood_predicted=False,
-                       translated=None)
+                               city=city,
+                               rainfall=rainfall,
+                               humidity=humidity,
+                               temperature=temperature,
+                               river_level=river_level,
+                               weather_status=weather_status,
+                               flood_predicted=False,
+                               translated=None)
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=3000)
