@@ -7,11 +7,14 @@ from googletrans import Translator
 from twilio.rest import Client
 import csv
 
-# Config
-API_KEY = 'dcd1e59fdf98dd5953683ad7e3f27651'
-TWILIO_SID = 'AC239b59d54ff986da5080d3e9bb54e387'
-TWILIO_TOKEN = 'fe32a0010c4df367068fab0736206ff2'
-FROM_PHONE = '+15739833157'
+import os  # 🔐 For environment variables
+
+# Secure Config using environment variables
+API_KEY = os.environ.get('API_KEY')
+TWILIO_SID = os.environ.get('TWILIO_SID')
+TWILIO_TOKEN = os.environ.get('TWILIO_TOKEN')
+FROM_PHONE = os.environ.get('FROM_PHONE')
+
 
 # Init
 app = Flask(__name__)
