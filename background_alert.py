@@ -9,7 +9,7 @@ from twilio.rest import Client
 # Config
 API_KEY = 'dcd1e59fdf98dd5953683ad7e3f27651'
 TWILIO_SID = 'AC239b59d54ff986da5080d3e9bb54e387'
-TWILIO_TOKEN = 'acd6f079a578cc7d9f8a4f24d2a91b7a'
+TWILIO_TOKEN = 'fe32a0010c4df367068fab0736206ff2'
 FROM_PHONE = '+15739833157'
 
 model = joblib.load('flood_model.pkl')
